@@ -35,7 +35,12 @@ module.exports = {
         defaultValue: false,
         allowNull: false,
       },
-      coordenator: {
+      coordinator: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+        allowNull: false,
+      },
+      admin: {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
         allowNull: false,
