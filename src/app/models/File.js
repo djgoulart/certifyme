@@ -6,6 +6,14 @@ class File extends Model {
       {
         name: Sequelize.STRING,
         path: Sequelize.STRING,
+        value: Sequelize.INTEGER,
+        approved: Sequelize.BOOLEAN,
+        awaiting: {
+          type: Sequelize.VIRTUAL,
+          get() {
+            return this.approved === null;
+          },
+        },
         url: {
           type: Sequelize.VIRTUAL,
           get() {

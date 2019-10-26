@@ -1,12 +1,21 @@
 import File from '../models/File';
 import User from '../models/User';
 import Course from '../models/Course';
+import Subscription from '../models/Subscription';
 
 class FileController {
   async index(req, res) {
     const files = await File.findAll({
       where: { user_id: req.userId },
-      attributes: ['id', 'url', 'name', 'path'],
+      attributes: [
+        'id',
+        'url',
+        'name',
+        'path',
+        'awaiting',
+        'approved',
+        'value',
+      ],
       include: [
         {
           model: User,
@@ -27,9 +36,21 @@ class FileController {
   async store(req, res) {
     const { originalname: name, filename: path } = req.file;
 
-    const file = await File.create({ user_id: req.userId, name, path });
+    const {
+      subscription: { course_id },
+    } = await User.findOne({
+      where: { id: req.userId },
+      include: [{ model: Subscription, as: 'subscription' }],
+    });
 
-    return res.json(file);
+    const { id, url, user_id, awaiting, approved, value } = await File.create({
+      user_id: req.userId,
+      course_id,
+      name,
+      path,
+    });
+
+    return res.json({ id, course_id, user_id, url, awaiting, approved, value });
   }
 }
 

@@ -1,8 +1,37 @@
 import * as Yup from 'yup';
 
 import User from '../models/User';
+import Subscription from '../models/Subscription';
+import Course from '../models/Course';
 
 class UserController {
+  async index(req, res) {
+    const users = await User.findAll({
+      where: {
+        admin: false,
+        coordinator: false,
+        monitor: false,
+      },
+      attributes: ['id', 'name', 'cpf', 'registration'],
+      include: [
+        {
+          model: Subscription,
+          as: 'subscription',
+          attributes: ['id', 'course_id', 'student_id'],
+          include: [
+            {
+              model: Course,
+              as: 'course',
+              attributes: ['id', 'name'],
+            },
+          ],
+        },
+      ],
+    });
+
+    return res.json(users);
+  }
+
   async store(req, res) {
     const schema = Yup.object().shape({
       name: Yup.string().required(),
