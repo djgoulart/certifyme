@@ -13,20 +13,6 @@ class CoordinatorController {
       return res.status(400).json({ error: 'Validations fails' });
     }
 
-    // Checks if authenticated user is an admin
-    const isAdmin = await User.findOne({
-      where: {
-        id: req.userId,
-        admin: true,
-      },
-    });
-
-    if (!isAdmin) {
-      return res.status(401).json({
-        error: 'You are not authorized to perform this action.',
-      });
-    }
-
     // Checks if user exists
     const user = await User.findOne({
       where: {

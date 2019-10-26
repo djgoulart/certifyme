@@ -14,20 +14,6 @@ class MonitorController {
       return res.status(400).json({ error: 'Validations fails' });
     }
 
-    // Checks if authenticated user is an Admin or an Coordinator
-    const isAdminOrCoordinator = await User.findOne({
-      where: {
-        id: req.userId,
-        [Op.or]: [{ admin: true }, { coordinator: true }],
-      },
-    });
-
-    if (!isAdminOrCoordinator) {
-      return res.status(401).json({
-        error: 'You are not authorized to perform this action.',
-      });
-    }
-
     // Checks if user exists
     const user = await User.findOne({
       where: {
