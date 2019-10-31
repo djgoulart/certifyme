@@ -14,9 +14,12 @@ import HourController from './app/controllers/HourController';
 
 import authMiddleware from './app/middlewares/auth';
 import adminOrCoordinatorMiddleware from './app/middlewares/adminOrCoordinator';
+import isNotStudentMiddleware from './app/middlewares/isNotStudent';
+
 import multerConfig from './config/multer';
 
 const routes = new Router();
+
 const upload = multer(multerConfig);
 
 routes.post('/sessions', SessionController.store);
@@ -34,15 +37,25 @@ routes.post('/files', upload.single('file'), FileController.store);
 routes.get('/files', FileController.index);
 
 routes.get('/courses', CourseController.index);
+
+// As rotas abaixo não podem ser acessadas por alunos.
+routes.use(isNotStudentMiddleware);
+
 routes.get('/availables', AvailableController.index);
+
 routes.put('/reviews/:fileId', ReviewController.update);
+
 routes.get('/hours/', HourController.index);
 
+// As rotas abaixo não podem ser acessadas por alunos e monitores.
 routes.use(adminOrCoordinatorMiddleware);
 
 routes.get('/users', UserController.index);
+
 routes.post('/coordinators', CoordinatorController.store);
+
 routes.post('/monitors', MonitorController.store);
+
 routes.post('/courses', CourseController.store);
 
 export default routes;
