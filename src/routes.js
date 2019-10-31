@@ -8,6 +8,9 @@ import MonitorController from './app/controllers/MonitorController';
 import CourseController from './app/controllers/CourseController';
 import FileController from './app/controllers/FileController';
 import SubscriptionController from './app/controllers/SubscriptionController';
+import AvailableController from './app/controllers/AvailableController';
+import ReviewController from './app/controllers/ReviewController';
+import HourController from './app/controllers/HourController';
 
 import authMiddleware from './app/middlewares/auth';
 import adminOrCoordinatorMiddleware from './app/middlewares/adminOrCoordinator';
@@ -31,6 +34,9 @@ routes.post('/files', upload.single('file'), FileController.store);
 routes.get('/files', FileController.index);
 
 routes.get('/courses', CourseController.index);
+routes.get('/availables', AvailableController.index);
+routes.put('/reviews/:fileId', ReviewController.update);
+routes.get('/hours/', HourController.index);
 
 routes.use(adminOrCoordinatorMiddleware);
 

@@ -1,5 +1,4 @@
 import * as Yup from 'yup';
-import { Op } from 'sequelize';
 
 import User from '../models/User';
 
