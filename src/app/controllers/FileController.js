@@ -34,7 +34,12 @@ class FileController {
   }
 
   async store(req, res) {
-    const { originalname: name, filename: path } = req.file;
+    if (!req.file) {
+      return res.json({ error: 'Only .pdf files are accepted.' });
+    }
+
+    const { filename: path } = req.file;
+    const { name } = req.body;
 
     const {
       subscription: { course_id },

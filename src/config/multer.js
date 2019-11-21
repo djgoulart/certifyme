@@ -13,4 +13,11 @@ export default {
       });
     },
   }),
+  fileFilter: (req, file, cb) => {
+    if (extname(file.originalname) === '.pdf') {
+      return cb(null, true);
+    }
+
+    return cb(null, false);
+  },
 };
